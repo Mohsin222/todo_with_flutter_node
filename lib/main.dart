@@ -2,7 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_node/models/task_model.dart';
+import 'package:todo_with_node/providers/auth_provider.dart';
 import 'package:todo_with_node/providers/get_task_provider.dart';
+import 'package:todo_with_node/views/auth/login_screen.dart';
+import 'package:todo_with_node/views/auth/signup_screen.dart';
 import 'package:todo_with_node/views/calender.dart';
 import 'package:todo_with_node/views/homepage.dart';
 import 'package:todo_with_node/views/tasklist.dart';
@@ -20,10 +23,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(providers: [
 
          ChangeNotifierProvider(create: (_) => GetTaskProvider()),
+                  ChangeNotifierProvider(create: (_) => AuthProvider()),
     ],
     
   child: MaterialApp(
-      title: 'Flutter Demo',
+      title: 'TODO WITH NODEJS',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -38,7 +42,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xfffcfcfc)
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: TaskList(),
+      home: LoginScreen(),
     ),
     );
   }

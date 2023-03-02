@@ -10,7 +10,7 @@ class TaskApiClass {
     final response =
         await dio.get('https://viridian-jellyfish-sock.cyclic.app/task');
 //  final  response = await dio.post('https://viridian-jellyfish-sock.cyclic.app/task', data: {'title': "HASSAN", 'status': true});
-    print(response.data['data']);
+    // print(response.data['data'][0]['publistDate']+'aaaaaaaaaaaaaaaaaaaa');
 
   
 

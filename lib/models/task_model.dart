@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:math';
 
 class TaskModel {
 
@@ -7,13 +6,17 @@ class TaskModel {
   late String? description;
   late bool? status;
  late String? email;
+ String? taskId;
+ DateTime? dateTime;
 // late DateTime date;
   TaskModel({
     required this.title,
     required this.description,
     required this.status,
-    this.email,
+   required this.email,
+  required this.taskId,
     // required this.date,
+    required this.dateTime
   });
 
 
@@ -23,7 +26,8 @@ title=map['title'];
 description=map['description'];
 status=map['status'];
 email=map["email"];
-// date:map["date"];
+taskId:map["taskid"];
+dateTime:map['publistDate'];
 
   }
 
@@ -34,9 +38,8 @@ email=map["email"];
       'description':description,
       'status':status,
       'email':email,
-
-
-
+      'taskid':taskId,
+      'publistDate':dateTime
     };
    }
 }

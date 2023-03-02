@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,7 @@ child: CalendarTimeline(
   activeDayColor: Colors.white,
   activeBackgroundDayColor: Colors.redAccent[100],
   dotsColor: Color(0xFF333A47),
-  selectableDayPredicate: (date) => date.day != 23,
+  // selectableDayPredicate: (date) => date.day != 23,
   locale: 'en_ISO',
 ),
 
@@ -164,6 +166,7 @@ class TaskSmallCard extends StatelessWidget {
 
       TaskModel taskModel =val.getListTasks[index];
   
+  
                 return 
                   
                   Card(
@@ -184,7 +187,13 @@ class TaskSmallCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              child: Text('taskModel.publistDate.toString()',
+                              child: Text(taskModel.email.toString(),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Color.fromARGB(255, 168, 119, 119))),
+                            ),
+                                  Container(
+                              child: Text(taskModel.taskId.toString(),
                                   style: TextStyle(
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 168, 119, 119))),

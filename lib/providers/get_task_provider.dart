@@ -19,7 +19,7 @@ var data =await TaskApiClass.gettasks();
       getListTasks.add(taskModel);
     }
     notifyListeners();
-print(getListTasks);
+print(data.data['data'][0]['publistDate'].toString());
 }
 
 
