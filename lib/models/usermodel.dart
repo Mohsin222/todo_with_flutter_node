@@ -1,9 +1,11 @@
+// ignore_for_file: unused_label
+
 class UserModel{
 
-  late String? email;
-  late String? password;
-  late String? userName;
-  late String? id;
+  String? email;
+  String? password;
+  String? userName;
+  String? id;
 
 
   UserModel({
@@ -12,10 +14,11 @@ class UserModel{
   });
 //for get data
   UserModel.fromMap(Map<String,dynamic> map){
+        password:map['password'];
     email=map['email'];
-    password:map['password'];
+
     userName:map['userName'];
-    id:map['id'];
+    id:map['_id'].toString();
   }
 
   Map<String,dynamic> toMap(){
@@ -23,7 +26,7 @@ class UserModel{
 'email':email,
 'password':password,
 'userName':userName,
-'id':id
+'_id':id
 
     };
   }

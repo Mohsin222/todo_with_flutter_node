@@ -43,14 +43,18 @@ var response = await http.post(url,body: userModel.toMap()
 
 );
 
-var decode = jsonDecode(response.body);
 
-log(decode.toString());
+
+
+
 if(response.statusCode ==200){
+  var decode = jsonDecode(response.body);
+ 
 return decode;
 }else{
-  decode = 400;
-   return response;
+var decode = jsonDecode(response.body);
+  log(decode.toString() +'bbbbbbbbbb');
+   return decode;
 }
 
 

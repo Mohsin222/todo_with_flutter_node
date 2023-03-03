@@ -151,7 +151,7 @@ TextEditingController userNameController= TextEditingController();
             
                         if (_formKey.currentState!.validate()) {
 
-                          value.signUp(userName: userNameController.text.trim(), email: emailController.text.trim(), password: passwordController.text.trim());
+                          value.signUp(userName: userNameController.text.trim(), email: emailController.text.trim(), password: passwordController.text.trim() ,context: context);
                               ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Processing Data')),
                   );
