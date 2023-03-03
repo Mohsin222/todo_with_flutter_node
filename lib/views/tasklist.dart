@@ -133,7 +133,8 @@ child: CalendarTimeline(
          child: LayoutBuilder(builder: (context, constraints){
           return Consumer<GetTaskProvider>(builder: (context,val,child){
        //  height: MediaQuery.of(context).size.height/2,
-    return GridView.builder(
+  if(val.getListTasks.length >0){
+      return GridView.builder(
                 itemCount: val.getListTasks.length,
                 gridDelegate:       SliverGridDelegateWithFixedCrossAxisCount(  
                         crossAxisCount: constraints.maxWidth>600?3:constraints.maxWidth>900? 4:1,  
@@ -142,6 +143,9 @@ child: CalendarTimeline(
                     ),   itemBuilder: (context,index){
                    return TaskSmallCard(index: index,);
                     });
+  }else{
+    return Center(child: Text('NO DATA',style: Theme.of(context).textTheme.displayMedium,),);
+  }
           });
          
          }),

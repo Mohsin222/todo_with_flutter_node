@@ -10,7 +10,7 @@ class GetTaskProvider extends ChangeNotifier{
   }
 List<TaskModel> getListTasks =[];
 getAllTask()async{
-  getListTasks.clear();
+  getListTasks=[];
 var data =await TaskApiClass.gettasks();
 
   for (var i in data.data['data']) {
@@ -36,7 +36,7 @@ changeCardStatus(bool? val){
                                             Color(0xffe91e63);
 
                                    switchValue = val ?? false;
-                                   getAllTask();
+                                  //  getAllTask();
                                    notifyListeners();
 
 }

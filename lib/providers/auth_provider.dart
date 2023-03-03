@@ -3,8 +3,10 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:todo_with_node/models/usermodel.dart';
 import 'package:todo_with_node/services/auth_api.dart';
+import 'package:todo_with_node/views/tasklist.dart';
 
 import '../components/alert_dialog.dart';
 
@@ -14,16 +16,37 @@ bool loading= false;
 UserModel userData = UserModel();
   //signUp
   void signUp({required String userName, required String email ,required String password, required BuildContext context})async{
-
-    UserModel userModel =UserModel(email: email,password: password,userName: userName);
-var data =AuthApiClass.signUp(userModel);
-
-if(data.data[''])
-userData =UserModel.fromMap(data);
-
+loading=true;
 notifyListeners();
+    UserModel userModel =UserModel(email: email,password: password,userName: userName,id: '');
+var data =
+       await AuthApiClass.signUp(userModel);
 
-print(userData.email.toString() + userData.userName.toString());
+try {
+   if(data['success'] ==true){
+   userData =UserModel.fromMap(data['data']);
+userData.userName=data['data']['userName'];
+userData.id=data['data']['_id'];
+  // print( userData.id.toString() +'aaaaaa');
+loading=false;
+   handleClickMe(context,userData.email.toString()+ userData.userName.toString());
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return TaskList();
+   },));
+ }
+ else if(data['success'] == false){
+    loading=false;
+    notifyListeners();
+  handleClickMe(context,data['error']);
+  log('STATUS 400');
+}
+} catch (e) {
+    loading=false;
+ log(e.toString() +'TryCatch error') ;
+}
+
+
+
   }
 
 
@@ -50,6 +73,9 @@ userData.id=data['data']['_id'];
   // print( userData.id.toString() +'aaaaaa');
 loading=false;
    handleClickMe(context,userData.email.toString()+ userData.userName.toString());
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return TaskList();
+   },));
 
 }else if(data['success'] == false){
     loading=false;

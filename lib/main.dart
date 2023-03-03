@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xfffcfcfc)
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: LoginScreen(),
+      home: SignUpScreen(),
     ),
     );
   }

@@ -22,16 +22,27 @@ var response = await http.post(url,body: userModel.toMap()
 )
 
 ;
-print('Response status: ${response.statusCode}');
-print('Response body: ${response.body}');
-var decode = jsonDecode(response.body);
+// print('Response status: ${response.statusCode}');
+// print('Response body: ${response.body}');
 
 
+print(response.statusCode.toString());
 if(response.statusCode ==200){
-return response;
+
+  var decode = jsonDecode(response.body);
+  log(decode.toString()+'dds');
+    return decode;
 }else{
-   return response;
+    var decode = jsonDecode(response.body);
+  // log(decode.toString()+'fassaaa');
+  return decode;
 }
+// if(response.statusCode ==200){
+  
+// return decode;
+// }else{
+//    return decode;
+// }
 
 
   }
