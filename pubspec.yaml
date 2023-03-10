@@ -55,6 +55,17 @@ dependencies:
   # loading
   loading_overlay: ^0.3.0
 
+  # for format date
+  intl: ^0.18.0
+
+  # page_transition
+  page_transition: ^2.0.9
+
+  # uuid: 
+  uuid: ^3.0.7
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

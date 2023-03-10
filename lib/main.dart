@@ -8,6 +8,7 @@ import 'package:todo_with_node/views/auth/login_screen.dart';
 import 'package:todo_with_node/views/auth/signup_screen.dart';
 import 'package:todo_with_node/views/calender.dart';
 import 'package:todo_with_node/views/homepage.dart';
+import 'package:todo_with_node/views/starting_screen.dart';
 import 'package:todo_with_node/views/tasklist.dart';
 
 void main() {
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xfffcfcfc)
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: SignUpScreen(),
+      home: StartingScreen(),
     ),
     );
   }
@@ -86,9 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   for(var i  in response.data['data']){
-    TaskModel taskModel =TaskModel.fromMap(i);
+    // TaskModel taskModel =TaskModel.fromMap(i);
 
-      task.add(taskModel);
+      // task.add(taskModel);
 
   }
   print(task);

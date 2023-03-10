@@ -5,9 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_node/models/task_model.dart';
 import 'package:todo_with_node/providers/get_task_provider.dart';
+import 'package:todo_with_node/services/task_api.dart';
+import 'package:todo_with_node/views/add_task.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({super.key});
@@ -35,6 +39,9 @@ class _TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: AddTask()));
+      },child: Icon(Icons.add),),
       body: SafeArea(
           child: Container(
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
@@ -49,7 +56,10 @@ child: CalendarTimeline(
   initialDate: DateTime.now(),
   firstDate: DateTime(2019, 1, 15),
   lastDate:DateTime.now().add(const Duration(days: 365 * 4)),
-  onDateSelected: (date) => print(date),
+  onDateSelected: (date) {
+    final getDataProvider =Provider.of<GetTaskProvider>(context,listen: false);
+    getDataProvider.updateDate(date);
+  },
   leftMargin: 20,
   monthColor: Colors.blueGrey,
   dayColor: Colors.teal[200],
@@ -170,7 +180,8 @@ class TaskSmallCard extends StatelessWidget {
 
       TaskModel taskModel =val.getListTasks[index];
   
-  
+  // var format = DateFormat.yMd(taskModel.dateTime);
+   DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
                 return 
                   
                   Card(
@@ -189,7 +200,72 @@ class TaskSmallCard extends StatelessWidget {
                         height: 200,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                       
                           children: [
+
+                            Row(
+                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(onPressed: (){
+                                  log(DateTime.now().toString());
+                                  var d = DateTime.parse(taskModel.dateTime.toString());
+//                               print(d);
+//                               log(DateTime.parse(taskModel.dateTime.toString()).toString());
+//                               // print(d is String);
+                                    DateTime dateTime =DateTime.now();
+//                     var data =          DateTime.parse(taskModel.dateTime.toString()).isAtSameMomentAs(dateTime);
+//                     // log(data.toString());
+if(d.day == dateTime.day){
+
+  print('TRUE   ');
+}else{
+      print('FALUE');
+}
+                
+                                }, icon: Icon(Icons.add)),
+
+                                IconButton(onPressed: (){
+              showDialog(context: context, builder:(context) {
+                return Dialog(
+                    shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(20.0)),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width/2,
+                    height: 200,
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        Text('Delete Task',style: TextStyle(fontSize: 27,fontWeight: FontWeight.w700),),
+                        Expanded(child: Align(
+                          alignment: Alignment.center,
+                          child: Text('Are you sure to delete this',style: TextStyle(fontSize: 20),))),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [Container(
+              
+                            child: ElevatedButton(onPressed: (){
+                              log(taskModel.taskId.toString());
+                             
+                              val.deleteTask(taskModel.taskId.toString());
+                               Navigator.pop(context);
+                              // TaskApiClass.deleteTask(taskModel.taskId.toString());
+                            }, child: Text('YEs'),
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(10),
+                              backgroundColor: Colors.red[400]
+                            ),
+                            )),TextButton(onPressed: (){}, child: Text('No',style: TextStyle(fontSize: 18)))],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },);
+                                }, icon: Icon(Icons.delete_outline_sharp,color: Colors.red[100],size:40 ,))
+                              ],
+                            ),
                             Container(
                               child: Text(taskModel.email.toString(),
                                   style: TextStyle(
@@ -197,7 +273,11 @@ class TaskSmallCard extends StatelessWidget {
                                       color: Color.fromARGB(255, 168, 119, 119))),
                             ),
                                   Container(
-                              child: Text(taskModel.taskId.toString(),
+                              child: Text(
+                                
+                          // taskModel.dateTime.toString(),
+                          DateFormat('yyyy-MM-dd').format(DateTime.parse(taskModel.dateTime.toString()) as DateTime),
+                             
                                   style: TextStyle(
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 168, 119, 119))),

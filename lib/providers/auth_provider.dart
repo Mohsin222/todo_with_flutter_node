@@ -25,8 +25,8 @@ var data =
 try {
    if(data['success'] ==true){
    userData =UserModel.fromMap(data['data']);
-userData.userName=data['data']['userName'];
-userData.id=data['data']['_id'];
+// userData.userName=data['data']['userName'];
+// userData.id=data['data']['_id'];
   // print( userData.id.toString() +'aaaaaa');
 loading=false;
    handleClickMe(context,userData.email.toString()+ userData.userName.toString());

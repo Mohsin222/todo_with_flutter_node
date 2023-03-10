@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/text_field.dart';
 import '../../providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,9 +19,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final _formKey = GlobalKey<FormState>();
 
-TextEditingController emailController= TextEditingController();
+TextEditingController emailController= TextEditingController(text: 'moh@g.com');
 
-TextEditingController passwordController =TextEditingController();
+TextEditingController passwordController =TextEditingController(text: '123456');
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -92,6 +93,7 @@ TextEditingController passwordController =TextEditingController();
                             height: 40,
                             
                             child: TextFormField(
+                              // initialValue: ,
                               controller: passwordController,
                                                   validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -148,19 +150,5 @@ TextEditingController passwordController =TextEditingController();
     );
   }
 
-    fieldsHeading(String headingText){
-    return        Container(
-              //  email Section
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(headingText,style: TextStyle(fontSize: 16),)),);
-  }
-
-   textDecoration({required String lableText, Icon? prefixIcon}){
-   return InputDecoration(
-                  prefix: Icon ==null ?null:prefixIcon,
-                    border: OutlineInputBorder(),
-                  labelText: lableText,
-                );
-   }
+    
 }
