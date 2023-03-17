@@ -4,7 +4,9 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_with_node/models/usermodel.dart';
+import 'package:todo_with_node/providers/get_task_provider.dart';
 import 'package:todo_with_node/services/auth_api.dart';
 import 'package:todo_with_node/views/tasklist.dart';
 
@@ -29,6 +31,9 @@ try {
 // userData.id=data['data']['_id'];
   // print( userData.id.toString() +'aaaaaa');
 loading=false;
+
+final taskProv =Provider.of<GetTaskProvider>(context,listen: false);
+taskProv.getAuthDate(userData);
    handleClickMe(context,userData.email.toString()+ userData.userName.toString());
    Navigator.push(context, MaterialPageRoute(builder: (context) {
      return TaskList();
@@ -72,6 +77,8 @@ userData.userName=data['data']['userName'];
 userData.id=data['data']['_id'];
   // print( userData.id.toString() +'aaaaaa');
 loading=false;
+final taskProv =Provider.of<GetTaskProvider>(context,listen: false);
+taskProv.getAuthDate(userData);
    handleClickMe(context,userData.email.toString()+ userData.userName.toString());
    Navigator.push(context, MaterialPageRoute(builder: (context) {
      return TaskList();

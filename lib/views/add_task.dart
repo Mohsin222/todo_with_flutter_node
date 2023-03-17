@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_with_node/components/dialog1.dart';
 import 'package:todo_with_node/components/text_field.dart';
 import 'package:todo_with_node/models/task_model.dart';
 import 'package:todo_with_node/providers/auth_provider.dart';
 import 'package:todo_with_node/providers/get_task_provider.dart';
 import 'package:todo_with_node/services/task_api.dart';
 
-class AddTask extends StatelessWidget {
- final _formKey = GlobalKey<FormState>();
+class AddTask extends StatefulWidget {
+  @override
+  State<AddTask> createState() => _AddTaskState();
+}
 
+class _AddTaskState extends State<AddTask> {
+ final _formKey = GlobalKey<FormState>();
 
  TextEditingController titleController= TextEditingController();
 
 TextEditingController descriptionController =TextEditingController();
+
+DateTime? completeDate ;
+
+DateTime curentDate=DateTime.now();
+
+
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+    completeDate= DateTime.now();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,15 +90,79 @@ TextEditingController descriptionController =TextEditingController();
                                                         ),),
       
          SizedBox(height: 44,),
+         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           children: [
+            Text(completeDate.toString()),
+             ElevatedButton(
+    onPressed: () {
+      // time picker
+       DatePicker.showTimePicker(context, showTitleActions: true,
+                      onChanged: (date) {
+                    print('change $date in time zone ' +
+                        date.timeZoneOffset.inHours.toString());
+                  
+                        setState(() {
+                                completeDate=date;
+                        });
+                  }, onConfirm: (date) {
+                    print('confirm $date');
+                        completeDate=date;
+                  }, currentTime: DateTime.now());
+
+      // date picker
+        DatePicker.showDatePicker(context,
+                                  showTitleActions: true,
+                                  minTime: DateTime.now(),
+                                  maxTime: DateTime(2024, 6, 7), onChanged: (date) {
+                                print('change $date');
+                                setState(() {
+                                  completeDate=date;
+                                });
+                                
+                              }, onConfirm: (date) {
+                                print('confirm $date');
+                                        completeDate=date;
+                              }, currentTime: DateTime.now(), locale: LocaleType.en);
+                        
+    },
+    child: Text(
+        'Pick Date',
+        style: TextStyle(color: Colors.white),
+    )),
+
+         
+
+           ],
+         ),
+                TextButton(
+                onPressed: () {
+                 
+                  
+                },
+                child: Text(
+                  'show time picker',
+                  style: TextStyle(color: Colors.blue),
+                )),
+            SizedBox(height: 44,),
                                                         // save button
                                                           Container(
                         width: MediaQuery.of(context).size.width,
                         height: 48,
                         child: ElevatedButton(onPressed: ()async{
-                            final authProvider= Provider.of<GetTaskProvider>(context,listen: false);
+
+                          if(completeDate!.toUtc().isAfter(curentDate.toUtc())){
+                            print('its good +++++');
+                                 final authProvider= Provider.of<GetTaskProvider>(context,listen: false);
+                                     await  authProvider.saveTask(context: context,title: titleController.text.trim(),description: descriptionController.text.trim() , completeDate: completeDate.toString());
+                     TaskModel taskModel = TaskModel(title: 'a', description: 'aa', email: 'avav', taskId: '1', );
+                          }else{
+                                          print('not good -=--');
+                                          dialog1(press: (){}, dialogTtile: 'Date Error', dialogContent: 'Complete date must me greater then current time', context: context);
+                          }
+                       
                  
-                      await  authProvider.saveTask(context: context,title: titleController.text.trim(),description: descriptionController.text.trim() );
-                        //  TaskModel taskModel = TaskModel(title: 'a', description: 'aa', email: 'avav', taskId: '1', );
+              
                         //  TaskApiClass.saveTask(taskModel);
                             //  TaskApiClass.saveTask();
                       //       if (_formKey.currentState!.validate()) {

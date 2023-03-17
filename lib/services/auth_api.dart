@@ -10,7 +10,7 @@ import 'package:todo_with_node/models/usermodel.dart';
 class AuthApiClass{
 
   static signUp(UserModel userModel)async{
- var url = Uri.parse('https://viridian-jellyfish-sock.cyclic.app/auth/signUp');
+ var url = Uri.parse('https://vast-erin-sawfish-kit.cyclic.app/auth/signUp');
 var response = await http.post(url,body: userModel.toMap()
 // {
 //     "email":"alpha@g1234.com",
@@ -49,7 +49,7 @@ if(response.statusCode ==200){
 
 
   static login(UserModel userModel)async{
- var url = Uri.parse('https://viridian-jellyfish-sock.cyclic.app/auth/login');
+ var url = Uri.parse('https://vast-erin-sawfish-kit.cyclic.app/auth/login');
 var response = await http.post(url,body: userModel.toMap()
 
 );

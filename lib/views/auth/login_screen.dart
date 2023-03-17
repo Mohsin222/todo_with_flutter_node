@@ -49,7 +49,7 @@ TextEditingController passwordController =TextEditingController(text: '123456');
                         //   child: SvgPicture.asset('/assets/logo.svg',color: Colors.black,),),
                         Container(
                          height: 50,
-                          child: SvgPicture.network('/assets/12.svg',color: Colors.blueAccent,)),
+                          child: SvgPicture.asset('assets/logo.svg',color: Colors.blueAccent,)),
                         SizedBox(height: 12,),
                         // heading
                         Container(

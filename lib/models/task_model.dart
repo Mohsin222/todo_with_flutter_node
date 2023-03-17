@@ -10,6 +10,7 @@ class TaskModel {
  String? email;
  String? taskId;
  String? dateTime;
+ String? taskCompleteDate;
 // late DateTime date;
   TaskModel({
     required this.title,
@@ -18,7 +19,8 @@ class TaskModel {
    required this.email,
   required this.taskId,
     // required this.date,
-     this.dateTime
+     this.dateTime,
+   this.taskCompleteDate
   });
 
 
@@ -29,7 +31,7 @@ class TaskModel {
 // status=map['status'];
 // email=map["email"];
 // taskId:map["taskid"];
-// dateTime:map['publistDate'];
+// dateTime:map['publishDate'];
 
 //   }
 
@@ -41,7 +43,7 @@ class TaskModel {
 //       'status':status,
 //       'email':email,
 //       'taskid':taskId,
-//       'publistDate':dateTime
+//       'publishDate':dateTime
 //     };
 //    }
 
@@ -52,8 +54,9 @@ class TaskModel {
       // 'status': status,
       'email': email,
       'taskid': taskId,
-      // 'publistDate':DateTime.now(),
+      'publishDate':dateTime,
       // 'dateTime': dateTime?.millisecondsSinceEpoch,
+      'taskCompleteDate':taskCompleteDate,
     };
   }
 
@@ -64,8 +67,9 @@ factory TaskModel.fromMap(Map<String, dynamic> map) {
       status: map['status'] != null ? map['status'] as bool : false,
       email: map['email'] != null ? map['email'] as String : null,
       taskId: map['taskid'] != null ? map['taskid'] as String : null,
-      dateTime: map['publistDate'] != null ? map['publistDate'] as String:null
-      // dateTime: map['publistDate'] != null ? DateTime.fromMillisecondsSinceEpoch(map['publistDate'] as int) : null,
+      dateTime: map['createdAt'] != null ? map['createdAt'] as String:null,
+      // dateTime: map['publishDate'] != null ? DateTime.fromMillisecondsSinceEpoch(map['publishDate'] as int) : null,
+          taskCompleteDate: map['taskCompleteDate'] != null ? map['taskCompleteDate'] as String : null,
     );
   }
 
@@ -83,13 +87,14 @@ String? description;
 String? email;
   String? taskId;
  String? dateTime;
+ String? taskCompleteDate;
   T1({
     this.title,
     this.description,
     this.status,
     this.email,
     this.taskId,
-    this.dateTime,
+    this.dateTime, String? taskCompleteDate,
   });
 
   Map<String, dynamic> toMap() {
@@ -98,10 +103,9 @@ String? email;
       'description': description,
       'status': status,
       'email': email,
-      'taskid': taskId,
-      'publistDate':dateTime
-      
-      // 'dateTime': dateTime?.millisecondsSinceEpoch,
+      'taskId': taskId,
+      'dateTime': dateTime,
+      'taskCompleteDate': taskCompleteDate,
     };
   }
 
@@ -109,11 +113,11 @@ String? email;
     return T1(
       title: map['title'] != null ? map['title'] as String : null,
       description: map['description'] != null ? map['description'] as String : null,
-      status: map['status'] != null ? map['status'] as bool : false,
+      status: map['status'] != null ? map['status'] as bool : null,
       email: map['email'] != null ? map['email'] as String : null,
-      taskId: map['taskid'] != null ? map['taskid'] as String : null,
-      dateTime: map['publistDate'] != null ? map['publistDate'] as String:null
-      // dateTime: map['publistDate'] != null ? DateTime.fromMillisecondsSinceEpoch(map['publistDate'] as int) : null,
+      taskId: map['taskId'] != null ? map['taskId'] as String : null,
+      dateTime: map['dateTime'] != null ? map['dateTime'] as String : null,
+      taskCompleteDate: map['taskCompleteDate'] != null ? map['taskCompleteDate'] as String : null,
     );
   }
 
