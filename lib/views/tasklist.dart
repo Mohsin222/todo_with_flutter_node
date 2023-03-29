@@ -42,7 +42,10 @@ class _TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white.withOpacity(0.3),
+        onPressed: (){
+        
         Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: AddTask()));
       },child: Icon(Icons.add),),
       body: SafeArea(
@@ -52,52 +55,40 @@ class _TaskListState extends State<TaskList> {
         // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
         child: ListView(
           children: [
-            Container(
-              height: 200,
-              decoration: BoxDecoration(border: Border.all()),
-
-child: CalendarTimeline(
-  initialDate: DateTime.now(),
-  firstDate: DateTime(2019, 1, 15),
-  lastDate:DateTime.now().add(const Duration(days: 365 * 4)),
-  onDateSelected: (date) {
-    final getDataProvider =Provider.of<GetTaskProvider>(context,listen: false);
-    getDataProvider.updateDate(date);
-  },
-  leftMargin: 20,
-  monthColor: Colors.blueGrey,
-  dayColor: Colors.teal[200],
-  activeDayColor: Colors.white,
-  activeBackgroundDayColor: Colors.white.withOpacity(0.6),
-  dotsColor: Color(0xFF333A47),
-  // selectableDayPredicate: (date) => date.day != 23,
-  locale: 'en_ISO',
-),
-
-
-
-
-
-
-
-              // child: CalendarTimeline(
-              //   showYears: false,
-              //   shrink: false,
-              //   initialDate: DateTime.now(),
-              //   firstDate: DateTime.now(),
-              //   lastDate: DateTime.now().add(const Duration(days: 365 * 4)),
-              //   onDateSelected: (date) =>
-              //       setState(() => _selectedDate = date),
-              //   leftMargin: 20,
-              //   monthColor: Color.fromARGB(179, 129, 20, 20),
-              //   dayColor: Colors.teal[200],
-              //   dayNameColor: const Color(0xFF333A47),
-              //   activeDayColor: Colors.white,
-              //   activeBackgroundDayColor: Colors.redAccent[100],
-              //   dotsColor: const Color(0xFF333A47),
-              //   selectableDayPredicate: (date) => date.day != 23,
-              //   locale: 'en',
-              // ),
+            Consumer<GetTaskProvider>(
+       
+              builder: (context, value,child) {
+                return Container(
+                  height: 200,
+                  decoration: BoxDecoration(border: Border.all()),
+            
+            child: CalendarTimeline(
+              initialDate:value.dateTime,
+              firstDate: DateTime(2019, 1, 15),
+              lastDate:DateTime.now().add(const Duration(days: 365 * 4)),
+              onDateSelected: (date) {
+                final getDataProvider =Provider.of<GetTaskProvider>(context,listen: false);
+                getDataProvider.updateDate(date);
+              },
+              leftMargin: 20,
+              monthColor: Colors.blueGrey,
+              dayColor: Colors.teal[200],
+              activeDayColor: Colors.white,
+              activeBackgroundDayColor: Colors.white.withOpacity(0.6),
+              dotsColor: Color(0xFF333A47),
+              // selectableDayPredicate: (date) => date.day != 23,
+              locale: 'en_ISO',
+            ),
+            
+            
+            
+            
+            
+            
+            
+                    
+                );
+              }
             ),
             SizedBox(
               height: 10,
@@ -115,43 +106,28 @@ child: CalendarTimeline(
             SizedBox(
               height: 5,
             ),
-            Container(
+       Consumer<GetTaskProvider>(builder:(context, value, child) {
+         return      Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                '2 Tasks today',
+                '${value.getListTasks.length} Tasks today',
                 style: Theme.of(context).textTheme.headline6!.copyWith(  color: Colors.white),
               ),
-            ),
+            );
+       },),
             SizedBox(
               height: 5,
             ),
        Container(
-        height: MediaQuery.of(context).size.height,
-    //     constraints: BoxConstraints(
-    //       minHeight: 200,
-    //       minWidth: 300,
-
-    //       // 
-    //     ),
-        
-    //  height: MediaQuery.of(context).size.height/2,
-    // return GridView.builder(
-    //             itemCount: 4,
-    //             gridDelegate:       SliverGridDelegateWithFixedCrossAxisCount(  
-    //                     crossAxisCount: constraints.maxWidth>600?3:constraints.maxWidth>900? 4:1,  
-    //                     crossAxisSpacing: 10.0,  
-    //                     mainAxisSpacing: 10.0  
-    //                 ),   itemBuilder: (context,index){
-    //                return TaskSmallCard();
-    //                 });
-          //  aspectRatio: 2/3,
-              // aspectRatio: 4/3,
+        // height: MediaQuery.of(context).size.height,
+        height: 1000,
+ 
          child: LayoutBuilder(builder: (context, constraints){
         return Consumer<GetTaskProvider>(builder: (context,val,child){
-       //  height: MediaQuery.of(context).size.height/2,
+   
   if(val.getListTasks.length >0){
       return GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics:NeverScrollableScrollPhysics(),
               itemCount: val.getListTasks.length,
               gridDelegate:       SliverGridDelegateWithFixedCrossAxisCount(  
                       crossAxisCount: constraints.maxWidth>600?3:constraints.maxWidth>900? 4:1,  
@@ -159,44 +135,11 @@ child: CalendarTimeline(
                       mainAxisSpacing: 10.0  
                   ),   itemBuilder: (context,index){
                  return TaskSmallCard(index: index,);
-                return Container(
-                  height: 60,
-                  width: 47,
-                  color: Color.fromARGB(255, 68, 133, 68),
-                  child: Column(
-                    children: [
-                      Text('TITLE'),
-                      Container(child: Text('dESVRTO AMRA AOR ALDN ALF A LAD')),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          
-                          Column(
-                            children: [
-                        Text(DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()),
-                               Text('Start'),
-                            ],
-                          ),
-                            Column(
-                            children: [
-                        Icon(Icons.delete,size: 35,color: Colors.red,),
-                               Text('Delete'),
-                            ],
-                          ),
-                                 Column(
-                            children: [
-                              Text(DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()),
-                               Text('End'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
+  
+                
                   });
   }else{
-    return Center(child: Text('NO DATA',style: Theme.of(context).textTheme.displayMedium,),);
+    return Center(child: Text('NO DATA',style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),),);
   }
         });
          

@@ -1,18 +1,19 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:developer';
+
 
 import 'package:dio/dio.dart';
 import 'package:todo_with_node/models/task_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_with_node/models/usermodel.dart';
 class TaskApiClass {
-  
+  static String apiUrl ="https://enchanting-pink-headscarf.cyclic.app";
   
  static gettasks() async {
   List<TaskModel> task = [];
   final dio = Dio();
     final response =
-        await dio.get('https://vast-erin-sawfish-kit.cyclic.app/task');
+        await dio.get('$apiUrl/task');
 //  final  response = await dio.post('https://viridian-jellyfish-sock.cyclic.app/task', data: {'title': "HASSAN", 'status': true});
     // print(response.data['data'][0]['publistDate']+'aaaaaaaaaaaaaaaaaaaa');
     return response;
@@ -21,7 +22,7 @@ class TaskApiClass {
 // TaskModel taskModel
   static saveTask(TaskModel taskModel)async{
     
-    var url = Uri.parse('https://vast-erin-sawfish-kit.cyclic.app/task');
+    var url = Uri.parse('$apiUrl/task');
     var response = await http.post(url,body:taskModel.toMap()
     
     
@@ -52,7 +53,7 @@ print(response);
 
 // Update Task
 static updateTask(String taskid)async{
- var url = Uri.parse('https://vast-erin-sawfish-kit.cyclic.app/task/update/ddd0fbd0-c02f-11ed-aa9e-f15d0d760e2c');
+ var url = Uri.parse('$apiUrl/task/update/ddd0fbd0-c02f-11ed-aa9e-f15d0d760e2c');
   var response = await http.patch(url,body: {
     "title":"ALPHA"
   });
@@ -60,7 +61,7 @@ static updateTask(String taskid)async{
     if(response.statusCode ==200){
 
   var decode = jsonDecode(response.body);
-  log(response.statusCode);
+  log(response.statusCode.toString());
 print(decode);
     return decode;
 }else{
@@ -78,12 +79,12 @@ print(decode);
 // Delete Task
 
 static deleteTask(String taskid)async{
-  var url = Uri.parse('https://vast-erin-sawfish-kit.cyclic.app/task/delete/$taskid');
+  var url = Uri.parse('$apiUrl/task/delete/$taskid');
  var response = await http.delete(url);
   if(response.statusCode ==200){
 
   var decode = jsonDecode(response.body);
-  log(response.statusCode);
+  log(response.statusCode.toString());
 print(decode);
     return decode;
 }else{
@@ -96,18 +97,19 @@ print(decode);
 }
 
 
-static updateOnlyTaskStatus({required bool switchValue,String? taskId})async{
+static updateOnlyTaskStatus({required bool switchValue,required TaskModel taskModel})async{
+
+  log(taskModel.status.toString());
+   var url = Uri.parse('$apiUrl/task/update/${taskModel.taskId}');
+  var response = await http.patch(url,body: taskModel.toMap());
 
 
-   var url = Uri.parse('https://vast-erin-sawfish-kit.cyclic.app/task/update/$taskId');
-  var response = await http.patch(url,body: {
-    "status":switchValue,
-  });
+  log(response.statusCode.toString());
 
       if(response.statusCode ==200){
 
   var decode = jsonDecode(response.body);
-  log(response.statusCode);
+  log(response.statusCode.toString());
 print(decode);
     return decode;
 }else{

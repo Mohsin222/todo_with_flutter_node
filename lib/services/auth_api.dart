@@ -4,13 +4,16 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_with_node/components/dialog1.dart';
 import 'package:todo_with_node/models/usermodel.dart';
 
 class AuthApiClass{
 
+static String apiUrl ="https://enchanting-pink-headscarf.cyclic.app";
   static signUp(UserModel userModel)async{
- var url = Uri.parse('https://vast-erin-sawfish-kit.cyclic.app/auth/signUp');
+ var url = Uri.parse('$apiUrl/auth/signUp');
 var response = await http.post(url,body: userModel.toMap()
 // {
 //     "email":"alpha@g1234.com",
@@ -22,8 +25,6 @@ var response = await http.post(url,body: userModel.toMap()
 )
 
 ;
-// print('Response status: ${response.statusCode}');
-// print('Response body: ${response.body}');
 
 
 print(response.statusCode.toString());
@@ -35,7 +36,9 @@ if(response.statusCode ==200){
 }else{
     var decode = jsonDecode(response.body);
   // log(decode.toString()+'fassaaa');
-  return decode;
+
+
+  return null;
 }
 // if(response.statusCode ==200){
   
@@ -49,7 +52,7 @@ if(response.statusCode ==200){
 
 
   static login(UserModel userModel)async{
- var url = Uri.parse('https://vast-erin-sawfish-kit.cyclic.app/auth/login');
+ var url = Uri.parse('$apiUrl/auth/login');
 var response = await http.post(url,body: userModel.toMap()
 
 );

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_node/models/task_model.dart';
+import 'package:todo_with_node/providers/add_task_provider.dart';
 import 'package:todo_with_node/providers/auth_provider.dart';
 import 'package:todo_with_node/providers/get_task_provider.dart';
 import 'package:todo_with_node/views/auth/login_screen.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(providers: [
 
          ChangeNotifierProvider(create: (_) => GetTaskProvider()),
+         ChangeNotifierProvider(create: (_) => AddTaskProvider()),
                   ChangeNotifierProvider(create: (_) => AuthProvider()),
     ],
     

@@ -18,13 +18,14 @@ bool loading= false;
 UserModel userData = UserModel();
   //signUp
   void signUp({required String userName, required String email ,required String password, required BuildContext context})async{
+try {
 loading=true;
 notifyListeners();
     UserModel userModel =UserModel(email: email,password: password,userName: userName,id: '');
 var data =
        await AuthApiClass.signUp(userModel);
 
-try {
+
    if(data['success'] ==true){
    userData =UserModel.fromMap(data['data']);
 // userData.userName=data['data']['userName'];
@@ -47,6 +48,8 @@ taskProv.getAuthDate(userData);
 }
 } catch (e) {
     loading=false;
+    notifyListeners();
+     handleClickMe(context,'ERROR');
  log(e.toString() +'TryCatch error') ;
 }
 

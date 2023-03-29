@@ -20,10 +20,11 @@ class GetTaskProvider extends ChangeNotifier{
 
   GetTaskProvider(){
     getAllTask();
+    _resetSelectedDate();
   }
   // for task tile
 Color taskCompleteColor=Colors.greenAccent;
-
+ DateTime dateTime =DateTime.now();
   void updateDate(DateTime newdateTime){
     dateTime=newdateTime;
     getAllTask();
@@ -37,31 +38,41 @@ userModel=userData;
   return userData;
   }
 
-  DateTime dateTime =DateTime.now();
+  // set initial date when ap is start
+    DateTime? selectedDate;
+   
+  void _resetSelectedDate() {
+    selectedDate = DateTime.now();
+    print(DateTime.now().add(const Duration(days: 0)));
+  }
+
+
+ 
 List<TaskModel> getListTasks =[];
+//get all task
 void getAllTask()async{
-  getListTasks=[];
+  getListTasks.clear();
 var data =await TaskApiClass.gettasks();
 
-print(data.toString());
 
+
+ 
 
   for (var i in data.data['data']) {
       TaskModel taskModel = TaskModel.fromMap(i);
-log(userModel.email.toString() +'aaaaaaaaaaaaaa');
+
         
 if(taskModel.email==userModel.email){
-        //  var d = DateTime.parse(taskModel.dateTime.toString());
-//  DateTime.parse("2018-02-27 10:09:00");
-  // DateFormat.parse(taskModel.dateTime.toString());
-  log("${DateTime.parse(taskModel.dateTime.toString()).day}");
-  print(dateTime.day);
+     
+  // log("${DateTime.parse(taskModel.dateTime.toString()).day}");
+
   if(DateTime.parse(taskModel.dateTime.toString()).day == dateTime.day){
 
  getListTasks.add(taskModel);
   }else{
-    log('FALESSSSS');
+    // log('FALESSSSS');
   }
+
 
 
   
@@ -73,6 +84,7 @@ if(taskModel.email==userModel.email){
 // print(data.data['data'][0]['publistDate'].toString());
 }
 
+//get all task  end xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 
@@ -105,7 +117,7 @@ updateSwitchvalue(bool val){
   
 }
 
-updateTask({required String? taskId,  required BuildContext context})async{
+updateTask({required TaskModel taskModel,  required BuildContext context})async{
   if(switchValue == true){
     switchValue =false;
     notifyListeners();
@@ -113,7 +125,7 @@ updateTask({required String? taskId,  required BuildContext context})async{
     switchValue =true;
     notifyListeners();
   }
- var data = await  TaskApiClass.updateOnlyTaskStatus(switchValue: switchValue,taskId: taskId);
+ var data = await  TaskApiClass.updateOnlyTaskStatus(switchValue: switchValue,taskModel: taskModel);
 
 
   if(data['success']==true){
@@ -127,42 +139,6 @@ updateTask({required String? taskId,  required BuildContext context})async{
 
 
 
-
-saveTask({required BuildContext context, required String title,required String description,required String completeDate})async{
-  var uuid = Uuid();
-  var id =uuid.v1();
-
-try {
-   final authProvider= Provider.of<AuthProvider>(context,listen: false).userData;
-TaskModel taskModel =TaskModel(
-  title: title, 
-description: description,
-//  status: false, 
- email: authProvider.email.toString(),
-  taskId: id.toString(), 
-dateTime: DateTime.now().toString(),
-taskCompleteDate: completeDate
-
-
-);
-var data = await TaskApiClass.saveTask(taskModel);
-
- if(data['success']==true){
-  notifyListeners();
-
-  print(data.toString() +"AAAAA");
-  getAllTask();
-Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRightWithFade, child: TaskList()));
- }else{
-  print(data.toString());
- }
-
-  print(authProvider.email.toString()  + ''+authProvider.password.toString());
-} catch (e) {
-  log(e.toString());
-}
-
-}
 
 
 //delete task

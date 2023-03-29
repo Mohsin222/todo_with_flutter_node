@@ -6,6 +6,8 @@ import 'package:todo_with_node/components/dialog1.dart';
 import 'package:todo_with_node/views/auth/login_screen.dart';
 import 'package:todo_with_node/views/auth/signup_screen.dart';
 
+import '../components/button1.dart';
+
 class StartingScreen extends StatelessWidget {
   const StartingScreen({super.key});
 
@@ -48,16 +50,16 @@ class StartingScreen extends StatelessWidget {
          space,
                     //login button xxxxxxxxxxxxxxxxxxxxxxxxxx
                      
-                                authBtn(text: 'LOGIN', press: (){
+                                Button1(text: 'LOGIN', press: (){
                     Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: LoginScreen()));
                                   // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
                                 }),
                     
                     space,
                     // sign up button
-                                 authBtn(text: 'Sign Up',press: (){
-                                  dialog1(press: (){}, dialogTtile: 'TTULE', dialogContent: "aaaa", context: context);
-      // Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: SignUpScreen(), isIos: true));
+                                 Button1(text: 'Sign Up',press: (){
+                                  // dialog1(press: (){}, dialogTtile: 'TTULE', dialogContent: "aaaa", context: context);
+      Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: SignUpScreen(), isIos: true));
       //  Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen(),));
     },),
                                  space
@@ -70,29 +72,3 @@ class StartingScreen extends StatelessWidget {
   }
 }
 
-class authBtn extends StatelessWidget {
-  final String text;
-  final VoidCallback press;
-  const authBtn({
-    super.key, required this.text, required this.press,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-          width: MediaQuery.of(context).size.width,
-                        height: 58,
-      child: ElevatedButton(onPressed: press, child: Text(text,style: TextStyle(fontSize: 20,letterSpacing: 2),),
-                 style: ElevatedButton.styleFrom(
-      shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  
-                  
-                  
-                ),
-                backgroundColor: Colors.white.withOpacity(0.3),
-      ),
-      ),
-    );
-  }
-}

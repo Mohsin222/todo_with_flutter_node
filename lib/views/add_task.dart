@@ -3,12 +3,16 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_with_node/components/button1.dart';
 import 'package:todo_with_node/components/dialog1.dart';
 import 'package:todo_with_node/components/text_field.dart';
 import 'package:todo_with_node/models/task_model.dart';
+import 'package:todo_with_node/providers/add_task_provider.dart';
 import 'package:todo_with_node/providers/auth_provider.dart';
 import 'package:todo_with_node/providers/get_task_provider.dart';
 import 'package:todo_with_node/services/task_api.dart';
+
+import '../constants/image_paths.dart';
 
 class AddTask extends StatefulWidget {
   @override
@@ -16,169 +20,213 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
- final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
- TextEditingController titleController= TextEditingController();
+  TextEditingController titleController = TextEditingController();
 
-TextEditingController descriptionController =TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
-DateTime? completeDate ;
+  DateTime? completeDate =DateTime.now();
 
-DateTime curentDate=DateTime.now();
+  DateTime curentDate = DateTime.now();
 
-
-@override
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     titleController.dispose();
     descriptionController.dispose();
-    completeDate= DateTime.now();
+    completeDate = DateTime.now();
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(child: Container(height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              SizedBox(height: 50,),
-                     Container(
-                                
-                                  // padding: EdgeInsets.all(5),
-                                  height: 55,
-                                  
-                                  child:TextFormField(
-                                    controller: titleController,
-                                      validator: (value) {
+    return Scaffold(
+      body: SafeArea(
+          child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(ImagesPath.backgroundImage),
+                fit: BoxFit.cover)),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                   IconButton(onPressed: (){
+                    Navigator.pop(context);
+                    }, icon:    Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 30,
+                      ))
+                    ],
+                  ),
+                  Container(
+                    child: Text(
+                      'ADD TASK',
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  fieldsHeading('Title'),
+                  Container(
+                    // padding: EdgeInsets.all(5),
+                    height: 55,
+
+                    child: TextFormField(
+                      cursorColor: Colors.white,
+                      style: const TextStyle(color: Colors.white),
+                      controller: titleController,
+                      validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter some text';
                         }
                         return null;
-                                    },
-                            decoration:  textDecoration( lableText: 'Enter Yout Title' , prefixIcon: Icon(Icons.mail)),
-                          ),),
-      
-                          SizedBox(height: 44,),
-                               Container(
-                                
-                                  // padding: EdgeInsets.all(5),
-                                 
-                           
-                                  
-                                  child:TextFormField(
-                                    controller: descriptionController,
-                                      validator: (value) {
-                                                      if (value == null || value.isEmpty) {
-                                                        return 'Please enter some text';
-                                                      }
-                                                      return null;
-                                    },
-                                                          decoration: InputDecoration(
-                                                                     border: OutlineInputBorder(),
-                                                            contentPadding: const EdgeInsets.symmetric(vertical: 100,horizontal: 10),
-                                                      labelText: 'Enter Description'
-                                                      
-                                                          )
-                                                          
-                                                        ),),
-      
-         SizedBox(height: 44,),
-         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-           children: [
-            Text(completeDate.toString()),
-             ElevatedButton(
-    onPressed: () {
-      // time picker
-       DatePicker.showTimePicker(context, showTitleActions: true,
-                      onChanged: (date) {
-                    print('change $date in time zone ' +
-                        date.timeZoneOffset.inHours.toString());
-                  
-                        setState(() {
-                                completeDate=date;
-                        });
-                  }, onConfirm: (date) {
-                    print('confirm $date');
-                        completeDate=date;
-                  }, currentTime: DateTime.now());
+                      },
+                      decoration: textDecoration(lableText: 'Enter Yout Title'),
+                    ),
+                  ),
 
-      // date picker
-        DatePicker.showDatePicker(context,
-                                  showTitleActions: true,
-                                  minTime: DateTime.now(),
-                                  maxTime: DateTime(2024, 6, 7), onChanged: (date) {
-                                print('change $date');
-                                setState(() {
-                                  completeDate=date;
-                                });
-                                
-                              }, onConfirm: (date) {
-                                print('confirm $date');
-                                        completeDate=date;
-                              }, currentTime: DateTime.now(), locale: LocaleType.en);
-                        
-    },
-    child: Text(
-        'Pick Date',
-        style: TextStyle(color: Colors.white),
-    )),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  fieldsHeading('Description'),
 
-         
-
-           ],
-         ),
-                TextButton(
-                onPressed: () {
-                 
-                  
-                },
-                child: Text(
-                  'show time picker',
-                  style: TextStyle(color: Colors.blue),
-                )),
-            SizedBox(height: 44,),
-                                                        // save button
-                                                          Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 48,
-                        child: ElevatedButton(onPressed: ()async{
-
-                          if(completeDate!.toUtc().isAfter(curentDate.toUtc())){
-                            print('its good +++++');
-                                 final authProvider= Provider.of<GetTaskProvider>(context,listen: false);
-                                     await  authProvider.saveTask(context: context,title: titleController.text.trim(),description: descriptionController.text.trim() , completeDate: completeDate.toString());
-                     TaskModel taskModel = TaskModel(title: 'a', description: 'aa', email: 'avav', taskId: '1', );
-                          }else{
-                                          print('not good -=--');
-                                          dialog1(press: (){}, dialogTtile: 'Date Error', dialogContent: 'Complete date must me greater then current time', context: context);
-                          }
-                       
-                 
+                  TextFormField(
+          
               
-                        //  TaskApiClass.saveTask(taskModel);
-                            //  TaskApiClass.saveTask();
+                    cursorColor: Colors.white,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(color: Colors.white),
+                    controller: descriptionController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    decoration: textDecoration(
+                        lableText: 'Enter Yout Title',
+                        paddingVertical: 100,
+                        paddingHorizontal: 10),
+                  ),
+
+             SizedBox(height: 12,),
+                                        Text(completeDate.toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
+                                        SizedBox(height: 12,),
+                  Button1(text: 'Pick DateTime', press: () {
+                           // time picker
+                           DatePicker.showTimePicker(context,
+                                theme: DatePickerTheme(backgroundColor: Colors.white,
+                                    //  itemStyle: TextStyle(color: Colors.black),
+                                    //  doneStyle: TextStyle(color: Colors.white),
+                                    //  headerColor: Colors.white.withOpacity(0.6)
+                                     ),
+                               showTitleActions: true,
+                               onChanged: (date) {
+                                 print('change $date in time zone ' +
+                                     date.timeZoneOffset.inHours.toString());
+
+                                 setState(() {
+                                   completeDate = date;
+                                 });
+                               },
+                               onConfirm: (date) {
+                                 print('confirm $date');
+                                 completeDate = date;
+                               },
+                               currentTime: DateTime.now(),
+                               onCancel: () {
+                                 setState(() {
+                                   completeDate = DateTime.now();
+                                 });
+                               });
+
+                           // date picker
+                           DatePicker.showDatePicker(context,
+                                     theme: DatePickerTheme(backgroundColor: Colors.white,
+                                    //  itemStyle: TextStyle(color: Colors.black),
+                                    //  doneStyle: TextStyle(color: Colors.white),
+                                    //  headerColor: Colors.white.withOpacity(0.6)
+                                     ),
+                               showTitleActions: true,
+                               minTime: DateTime.now(),
+                               maxTime: DateTime(2024, 6, 7),
+                               onChanged: (date) {
+                             print('change $date');
+                             setState(() {
+                               completeDate = date;
+                             });
+                           }, onConfirm: (date) {
+                             print('confirm $date');
+                             completeDate = date;
+                           },
+                               currentTime: DateTime.now(),
+                               locale: LocaleType.en);
+                         },),
+    
+                  SizedBox(
+                    height: 44,
+                  ),
+                  // save button
+                  Button1(text: 'SAVE', press: () async {
+                      if (completeDate!.toUtc().isAfter(curentDate.toUtc())) {
+                        print('its good +++++');
+                        final saveTask = Provider.of<AddTaskProvider>(
+                            context,
+                            listen: false);
+                        await saveTask.saveTask(
+                            context: context,
+                            title: titleController.text.trim(),
+                            description: descriptionController.text.trim(),
+                            completeDate: completeDate.toString());
+                        // TaskModel taskModel = TaskModel(
+                        //   title: 'a',
+                        //   description: 'aa',
+                        //   email: 'avav',
+                        //   taskId: '1',
+                        // );
+                      } else {
+                        print('not good -=--');
+                        dialog1(
+                            press: () {},
+                            dialogTtile: 'Date Error',
+                            dialogContent:
+                                'Complete date must me greater then current time',
+                            context: context);
+                      }
+
+                      //  TaskApiClass.saveTask(taskModel);
+                      //  TaskApiClass.saveTask();
                       //       if (_formKey.currentState!.validate()) {
-                          
-                        
-                                  ScaffoldMessenger.of(context).showSnackBar(
+
+                      ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Processing Data')),
                       );
                       //       }
-                        },child: Text('LOGIN'),),
-                       ),
-              
-            ],
+                    },),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
       )),
     );
   }

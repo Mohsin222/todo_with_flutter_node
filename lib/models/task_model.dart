@@ -51,11 +51,11 @@ class TaskModel {
     return <String, dynamic>{
       'title': title,
       'description': description,
-      // 'status': status,
+      'status': status.toString() ,
       'email': email,
       'taskid': taskId,
       'publishDate':dateTime,
-      // 'dateTime': dateTime?.millisecondsSinceEpoch,
+      // 'dateTime': dateTime,
       'taskCompleteDate':taskCompleteDate,
     };
   }
@@ -67,7 +67,7 @@ factory TaskModel.fromMap(Map<String, dynamic> map) {
       status: map['status'] != null ? map['status'] as bool : false,
       email: map['email'] != null ? map['email'] as String : null,
       taskId: map['taskid'] != null ? map['taskid'] as String : null,
-      dateTime: map['createdAt'] != null ? map['createdAt'] as String:null,
+      dateTime: map['publishDate'] != null ? map['publishDate'] as String:null,
       // dateTime: map['publishDate'] != null ? DateTime.fromMillisecondsSinceEpoch(map['publishDate'] as int) : null,
           taskCompleteDate: map['taskCompleteDate'] != null ? map['taskCompleteDate'] as String : null,
     );

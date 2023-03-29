@@ -23,7 +23,7 @@ class TaskSmallCard extends StatelessWidget {
       TaskModel taskModel =val.getListTasks[index];
   
   // var format = DateFormat.yMd(taskModel.dateTime);
-   DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
+  //  DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
                 return 
                   
                   GestureDetector(
@@ -57,17 +57,7 @@ class TaskSmallCard extends StatelessWidget {
                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(onPressed: (){
-                  //                                   log(DateTime.now().toString());
-                  //                                   var d = DateTime.parse(taskModel.dateTime.toString());
-                        
-                  //                                     DateTime dateTime =DateTime.now();
-                                  
-                  // if(d.day == dateTime.day){
-                  
-                  //   print('TRUE   ');
-                  // }else{
-                  //       print('FALUE');
-                  // }
+      
                   TaskApiClass.updateTask('');
                                   
                                   }, icon: Icon(Icons.add)),
@@ -80,41 +70,7 @@ class TaskSmallCard extends StatelessWidget {
                                 val.deleteTask(taskModel.taskId.toString());
                                  Navigator.pop(context);
                            });         
-                                // showDialog(context: context, builder:(context) {
-                                //   return Dialog(
-                                //       shape: RoundedRectangleBorder(
-                                //   borderRadius:
-                                //       BorderRadius.circular(20.0)),
-                                //     child: Container(
-                                //       width: MediaQuery.of(context).size.width/2,
-                                //       height: 200,
-                                //       padding: const EdgeInsets.all(12.0),
-                                //       child: Column(
-                                //         children: [
-                                //           Text('Delete Task',style: TextStyle(fontSize: 27,fontWeight: FontWeight.w700),),
-                                //           Expanded(child: Align(
-                                //             alignment: Alignment.center,
-                                //             child: Text('Are you sure to delete this',style: TextStyle(fontSize: 20),))),
-                  
-                                //           Row(
-                                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //             children: [Container(
-                                
-                                //               child: ElevatedButton(onPressed: (){
-                              
-                                //                 // TaskApiClass.deleteTask(taskModel.taskId.toString());
-                                //               }, child: Text('YEs'),
-                                //               style: ElevatedButton.styleFrom(
-                                //                 padding: EdgeInsets.all(10),
-                                //                 backgroundColor: Colors.red[400]
-                                //               ),
-                                //               )),TextButton(onPressed: (){}, child: Text('No',style: TextStyle(fontSize: 18)))],
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     ),
-                                //   );
-                                // },);
+                               
                                   }, icon: Icon(Icons.delete_outline_sharp,color: Colors.red[100],size:40 ,))
                                 ],
                               ),
@@ -177,26 +133,26 @@ class TaskSmallCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    child: Text(val.switchValue == true
+                                    child: Text(taskModel.status == true
                                         ? 'Complete'
-                                        : 'Incomplete'),
+                                        : 'Incomplete',style: TextStyle(fontSize: 24,color: Colors.white),),
                                   ),
-                                  Container(
-                                    alignment: Alignment.centerRight,
-                                    child: CupertinoSwitch(
-                                      // This bool value toggles the switch.
+                  //                 Container(
+                  //                   alignment: Alignment.centerRight,
+                  //                   child: CupertinoSwitch(
+                  //                     // This bool value toggles the switch.
                   
-                                      value: val.switchValue,
+                  //                     value: val.switchValue,
                   
-                                      activeColor: Color.fromARGB(255, 104, 0, 35),
+                  //                     activeColor: Color.fromARGB(255, 104, 0, 35),
                   
-                                      onChanged: (bool? value) {
-                                        // This is called when the user toggles the switch.
-                  val.changeCardStatus(value, taskModel.taskCompleteDate);
+                  //                     onChanged: (bool? value) {
+                  //                       // This is called when the user toggles the switch.
+                  // val.changeCardStatus(value, taskModel.taskCompleteDate);
                                   
-                                      },
-                                    ),
-                                  ),
+                  //                     },
+                  //                   ),
+                  //                 ),
                                 ],
                               ),
                             ],
