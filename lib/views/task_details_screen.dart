@@ -17,121 +17,26 @@ import '../components/text_field.dart';
 import '../constants/image_paths.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  final int index;
-  const TaskDetailsScreen({super.key, required this.index});
+  final int? index;
+  final TaskModel? taskModel;
+  const TaskDetailsScreen({super.key,  this.index, required this.taskModel});
 
   @override
   State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
 }
-TextEditingController titleController =TextEditingController();
-TextEditingController descriptionController =TextEditingController();
+
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     void _show({required TaskModel taskModel ,required BuildContext ctx, required VoidCallback press}) {
-    showModalBottomSheet(
-        elevation: 10,
-        backgroundColor: Colors.white.withOpacity(0.3),
-        context: ctx,
-           shape: const RoundedRectangleBorder( // <-- SEE HERE
-          borderRadius: BorderRadius.vertical( 
-            top: Radius.circular(25.0),
-          ),
-        ),
-        builder: (ctx) => Container(
-          decoration: BoxDecoration(
-                  // color: Colors.black,
-            // image: DecorationImage(image: AssetImage(ImagesPath.backgroundImage)),
-            ),
-              width: 300,
-              height: MediaQuery.of(ctx).size.height/2,
-        
-              alignment: Alignment.center,
-              child: Column(children: [
-                Container(
-                  // height: 55,
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: TextEditingController(text: taskModel.title),
-                               cursorColor: Colors.white,
-                                               style:  TextStyle(color: Colors.white),
 
-                    decoration: textDecoration(lableText: taskModel.title.toString()),
-                    onChanged: (val){
-                      taskModel.title= val;
-                    },
-                  ),
-                ),
-                SizedBox(height: 12,),
-                       Container(
-                  // height: 55,
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                       cursorColor: Colors.white,
-                                               style:  TextStyle(color: Colors.white),
-                    controller: TextEditingController(text: taskModel.description),
-
-                       onChanged: (val){
-                      taskModel.description= val;
-                    },
-                    
-                                        decoration: textDecoration(lableText: '',
-                                              paddingVertical: 50,
-                        paddingHorizontal: 10,
-                     
-                                        ),
-                  ),
-                ),
-Text(taskModel.taskCompleteDate!),
-          Container(
-                  // height: 55,
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                  
-                               cursorColor: Colors.white,
-                                               style:  TextStyle(color: Colors.white),
-                                               
-                     controller: TextEditingController(text: taskModel.taskCompleteDate),
-                     onChanged: (val){
-                      taskModel.taskCompleteDate =val;
-                     },
-                    decoration: textDecoration(lableText: taskModel.title.toString(),
-                       suffixIcon: IconButton(onPressed:press, icon: Icon(Icons.arrow_drop_down))
-                    ),
-                  ),
-                ),
-        //  Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [Text("Date"),
-        //   IconButton(onPressed: (){}, icon: Icon(Icons.arrow_drop_down))
-        //   ],
-        //  ),
-        
-             ElevatedButton(
-      child: Text(
-        "Buy now".toUpperCase(),
-        style: TextStyle(fontSize: 14)
-      ),
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.pinkAccent),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-            side: BorderSide(color: Colors.white)
-          )
-        )
-      ),
-      onPressed: () => null
-    )
-              ]),
-            ));
   }
-
+DateTime? dateTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
    
       body: Container(
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
             image: DecorationImage(
                 image: NetworkImage(
@@ -141,13 +46,13 @@ Text(taskModel.taskCompleteDate!),
           child: Consumer<GetTaskProvider>(
             builder: (context, value, child) {
               return Consumer<GetTaskProvider>(builder: (context, val, child) {
-                TaskModel taskModel = val.getListTasks[widget.index];
+                // TaskModel taskModel = val.getListTasks[widget.index];
 
                 // var format = DateFormat.yMd(taskModel.dateTime);
-                DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
+                // DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
 
                 // val.updateSwitchvalue(taskModel.status!);
-                return Card(
+                return val.getListTasks.length >0? Card(
                   margin: EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(),
@@ -159,7 +64,7 @@ Text(taskModel.taskCompleteDate!),
                   color: Colors.white.withOpacity(0.3),
                   child: Container(
                     padding: EdgeInsets.all(10),
-                    height: MediaQuery.of(context).size.height / 2,
+                    height: MediaQuery.of(context).size.height / 1.5,
                     child: Column(children: [
                       Row(
                         children: [
@@ -168,67 +73,186 @@ Text(taskModel.taskCompleteDate!),
                             builder: (context, value,child) {
                               return IconButton(
                                 onPressed: () {
-                                  _show(taskModel: taskModel,ctx:context,press: (){
-                                    // time picker
-                               DatePicker.showTimePicker(context,
-                                    theme: DatePickerTheme(backgroundColor: Colors.white,
-                                        //  itemStyle: TextStyle(color: Colors.black),
-                                        //  doneStyle: TextStyle(color: Colors.white),
-                                        //  headerColor: Colors.white.withOpacity(0.6)
-                                         ),
-                                   showTitleActions: true,
-                                   onChanged: (date) {
-                                     print('change $date in time zone ' +
-                                         date.timeZoneOffset.inHours.toString());
-                          
-                                
-                                   setState(() {
-                                         value.selectedDate = date;
-                                   });
-                                   
-                                   },
-                                   onConfirm: (date) {
-                                     print('confirm $date');
-                             setState(() {
-                                       value.selectedDate = date;
-                             });
-                                   },
-                                   currentTime: DateTime.now(),
-                                   onCancel: () {
-                            
-                                       value.selectedDate = DateTime.parse(taskModel.taskCompleteDate!);
-                            
-                                   });
 
+    showModalBottomSheet(
+        elevation: 10,
+        backgroundColor: Colors.white.withOpacity(0.3),
+        context: context,
+           shape: const RoundedRectangleBorder( // <-- SEE HERE
+          borderRadius: BorderRadius.vertical( 
+            top: Radius.circular(25.0),
+          ),
+        ),
+        builder: (context){
 
-                                                // date picker
-                           DatePicker.showDatePicker(context,
-                                     theme: DatePickerTheme(backgroundColor: Colors.white,
-                                    //  itemStyle: TextStyle(color: Colors.black),
-                                    //  doneStyle: TextStyle(color: Colors.white),
-                                    //  headerColor: Colors.white.withOpacity(0.6)
-                                     ),
-                               showTitleActions: true,
-                               minTime: DateTime.now(),
-                               maxTime: DateTime(2024, 6, 7),
-                               onChanged: (date) {
-                             print('change $date');
-                  
-                             setState(() {
-                                 value.selectedDate = date;
-                             });
+          return StatefulBuilder(builder: (BuildContext context,StateSetter setState){
+            return Container(
+          decoration: BoxDecoration(
+                  // color: Colors.black,
+            // image: DecorationImage(image: AssetImage(ImagesPath.backgroundImage)),
+            ),
+              width: 300,
+              height: MediaQuery.of(context).size.height/2,
+        
+              alignment: Alignment.center,
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  Container(
+                    // height: 55,
+                    padding: EdgeInsets.all(10),
+                    child: TextField(
+                      controller: TextEditingController(
                         
-                           }, onConfirm: (date) {
-                             print('confirm $date');
-                          setState(() {
-                               value.selectedDate = date;
-                          });
-                           },
-                               currentTime:DateTime.parse(taskModel.taskCompleteDate!),
-                               locale: LocaleType.en);
+                        text: widget.taskModel!.title),
+                                 cursorColor: Colors.white,
+                                                 style:  TextStyle(color: Colors.white),
+              
+                      decoration: textDecoration(lableText: widget.taskModel!.title.toString()),
+                      onChanged: (val){
+                        widget.taskModel!.title= val;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 12,),
+                         Container(
+                    // height: 55,
+                    padding: EdgeInsets.all(10),
+                    child: TextField(
+                         cursorColor: Colors.white,
+                                                 style:  TextStyle(color: Colors.white),
+                      controller: TextEditingController(text: widget.taskModel!.description),
+              
+                         onChanged: (val){
+                        widget.taskModel!.description= val;
+                      },
+                      
+                                          decoration: textDecoration(lableText: '',
+                                                paddingVertical: 50,
+                          paddingHorizontal: 10,
+                       
+                                          ),
+                    ),
+                  ),
+         
+                        Container(
+                    // height: 55,
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(widget.taskModel!.taskCompleteDate!,style: TextStyle(fontSize: 20,color: Colors.white),),
+                        IconButton(onPressed:(){
+                          // date icon
+                               // time picker
+                                 DatePicker.showTimePicker(context,
+                                      theme: DatePickerTheme(backgroundColor: Colors.white,
+                                          //  itemStyle: TextStyle(color: Colors.black),
+                                          //  doneStyle: TextStyle(color: Colors.white),
+                                          //  headerColor: Colors.white.withOpacity(0.6)
+                                           ),
+                                     showTitleActions: true,
+                                     onChanged: (date) {
+                                       print('change $date in time zone ' +
+                                           date.timeZoneOffset.inHours.toString());
                             
-                                  });
+                                  
+                                     setState(() {
+                                       dateTime= date;
+                                          widget.taskModel!.taskCompleteDate = dateTime.toString();
+                                     });
+                                     
+                                     },
+                                     onConfirm: (date) {
+                                       print('confirm $date');
+                               setState(() {
+                                         dateTime = date;
+                                         widget.taskModel!.taskCompleteDate=date as String;
+                               });
+                                     },
+                                     currentTime: DateTime.parse(widget.taskModel!.taskCompleteDate!),
+                                     onCancel: () {
+                              
+                                    dateTime = DateTime.parse(widget.taskModel!.taskCompleteDate!);
+                            
+                                     });
+              
+              
+                                                          // date picker
+                             DatePicker.showDatePicker(context,
+                                       theme: DatePickerTheme(backgroundColor: Colors.white,
+                                      //  itemStyle: TextStyle(color: Colors.black),
+                                      //  doneStyle: TextStyle(color: Colors.white),
+                                      //  headerColor: Colors.white.withOpacity(0.6)
+                                       ),
+                                 showTitleActions: true,
+                                 minTime: DateTime.now(),
+                                 maxTime: DateTime(2024, 6, 7),
+                                 onChanged: (date) {
+                               print('change $date');
+                    
+                               setState(() {
+                                  dateTime= date;
+                                          widget.taskModel!.taskCompleteDate = dateTime.toString();
+                               });
+                          
+                             }, onConfirm: (date) {
+                               print('confirm $date');
+                            setState(() {
+                            dateTime = date;
+                                         widget.taskModel!.taskCompleteDate=date as String;
+                            });
+                            
+                             },
+                             onCancel: (){
+                                dateTime = DateTime.parse(widget.taskModel!.taskCompleteDate!);
+                             },
+                                 currentTime:DateTime.parse(widget.taskModel!.taskCompleteDate!),
+                                 locale: LocaleType.en);
+                         }, icon: Icon(Icons.arrow_drop_down,color: Colors.white,size: 20,))
+                      ],
+                    )
+                  ),
+                      //  Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [Text("Date"),
+                      //   IconButton(onPressed: (){}, icon: Icon(Icons.arrow_drop_down))
+                      //   ],
+                      //  ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Button1(text: 'UPDATE', press: (){
+                         value.updateTask(taskModel: widget.taskModel!, context: context);
+                        }),
+                      ),
+                  //          ElevatedButton(
+                  //   child: Text(
+                  //     "Buy now".toUpperCase(),
+                  //     style: TextStyle(fontSize: 14)
+                  //   ),
+                  //   style: ButtonStyle(
+                  //     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  //     backgroundColor: MaterialStateProperty.all<Color>(Colors.pinkAccent),
+                  //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  //       RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.zero,
+                  //         side: BorderSide(color: Colors.white)
+                  //       )
+                  //     )
+                  //   ),
+                  //   onPressed: () {
+                  //     value.updateTask(taskModel: widget.taskModel, context: context);
+                  //   }
+                  // )
+                ]),
+              ),
+            );
+          });
+        }
+            
+            );
 
+
+                       
 
 
                       
@@ -242,7 +266,16 @@ Text(taskModel.taskCompleteDate!),
                             }
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                                      dialog1(context: context,dialogTtile: 'DELETE DIALOG',dialogContent: 'Are you sure to delete this',press: (){
+                    log(widget.taskModel!.taskId.toString());
+                               
+                                val.deleteTask(widget.taskModel!.taskId.toString(),context);
+                                 Navigator.pop(context);
+                           });       
+
+
+                            },
                             icon: const Icon(
                               Icons.delete,
                               color: Colors.red,
@@ -253,7 +286,7 @@ Text(taskModel.taskCompleteDate!),
                       ),
                       Container(
                         child: Text(
-                          taskModel.title.toString(),
+                          widget.taskModel!.title.toString(),
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
@@ -269,7 +302,7 @@ Text(taskModel.taskCompleteDate!),
                                 .textTheme
                                 .headlineSmall!
                                 .copyWith(color: Colors.white, fontSize: 20),
-                            maxLines: 6,
+                            maxLines: 20,
                           ),
                         ),
                         
@@ -279,11 +312,11 @@ Text(taskModel.taskCompleteDate!),
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    child: Text(taskModel.status == true
+                                    child: Text(widget.taskModel!.status == true
                                         ? 'Complete'
                                         : 'Incomplete',
                                         style: TextStyle(
-                                          color: taskModel.status ==true ?Colors.pink[300]:Colors.white,
+                                          color: widget.taskModel!.status ==true ?Colors.pink[300]:Colors.white,
                                           fontSize: 17,  fontWeight:FontWeight.bold
                                         ),
                                         ),
@@ -293,7 +326,7 @@ Text(taskModel.taskCompleteDate!),
                                     child: CupertinoSwitch(
                                       // This bool value toggles the switch.
                   
-                                      value: taskModel.status!,
+                                      value: widget.taskModel!.status!,
                   
                                       activeColor: Colors.pink[300],
                                       
@@ -302,9 +335,9 @@ Text(taskModel.taskCompleteDate!),
                   
                
                 dialog1(press: (){
- taskModel.status=value;
+ widget.taskModel!.status=value;
  
-      val.updateTask(context: context,taskModel: taskModel);
+      val.updateTaskStatus(context: context,taskModel: widget.taskModel!);
     Navigator.pop(context);
                 }, dialogTtile: 'UPDATE', dialogContent: 'Are you change the status', context: context);
  
@@ -338,7 +371,7 @@ Text(taskModel.taskCompleteDate!),
                   
                                       Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.parse(taskModel.dateTime.toString())).toString(),
+                                    child: Text(DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.parse(widget.taskModel!.dateTime.toString())).toString(),
                                         style: TextStyle(fontSize: 13,  color: Colors.white)),
                                   ),
                                 ],
@@ -357,7 +390,7 @@ Text(taskModel.taskCompleteDate!),
                   
                                       Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.parse(taskModel.taskCompleteDate.toString())).toString(),
+                                    child: Text(DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.parse(widget.taskModel!.taskCompleteDate.toString())).toString(),
                                         style: TextStyle(fontSize: 13,  color: Colors.white)),
                                   ),
                                 ],
@@ -368,6 +401,8 @@ Text(taskModel.taskCompleteDate!),
                        //xxxxxxxxxxx      // Dates row end xxxxxxxxxxxxxxxxxxxxx
                     ]),
                   ),
+                ) :  Center(
+                  child: CircularProgressIndicator(),
                 );
               });
             },

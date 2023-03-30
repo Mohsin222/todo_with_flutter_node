@@ -28,7 +28,7 @@ class TaskSmallCard extends StatelessWidget {
                   
                   GestureDetector(
                     onTap: (){
-  Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: TaskDetailsScreen(index: index,)));
+  Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: TaskDetailsScreen(taskModel: taskModel,)));
 
                     },
                     child: Card(
@@ -54,20 +54,16 @@ class TaskSmallCard extends StatelessWidget {
                             children: [
                   
                               Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                   mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  IconButton(onPressed: (){
-      
-                  TaskApiClass.updateTask('');
-                                  
-                                  }, icon: Icon(Icons.add)),
+                        
                   
                                   IconButton(onPressed: (){
                   
                            dialog1(context: context,dialogTtile: 'DELETE DIALOG',dialogContent: 'Are you sure to delete this',press: (){
                     log(taskModel.taskId.toString());
                                
-                                val.deleteTask(taskModel.taskId.toString());
+                                val.deleteTask(taskModel.taskId.toString(),context);
                                  Navigator.pop(context);
                            });         
                                

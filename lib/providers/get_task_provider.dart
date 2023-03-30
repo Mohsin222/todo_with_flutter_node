@@ -117,7 +117,7 @@ updateSwitchvalue(bool val){
   
 }
 
-updateTask({required TaskModel taskModel,  required BuildContext context})async{
+updateTaskStatus({required TaskModel taskModel,  required BuildContext context})async{
   if(switchValue == true){
     switchValue =false;
     notifyListeners();
@@ -137,12 +137,35 @@ updateTask({required TaskModel taskModel,  required BuildContext context})async{
   }
 }
 
+updateTask({required TaskModel taskModel,  required BuildContext context})async{
+  try {
+
+  notifyListeners();
+ var data = await  TaskApiClass.updateOnlyTaskStatus(switchValue: switchValue,taskModel: taskModel);
+
+
+  if(data['success']==true){
+   
+      getAllTask();
+      notifyListeners();
+
+Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRightWithFade, child: TaskList()));
+  }else{
+   
+    dialog1(press: (){},context: context,dialogContent:data['error'].toString(),dialogTtile: 'ERROR' );
+  }
+  } catch (e) {
+     dialog1(press: (){},context: context,dialogContent:e.toString(),dialogTtile: 'ERROR' );
+  }
+
+}
+
 
 
 
 
 //delete task
-void deleteTask(String taskid)async{
+void deleteTask(String taskid, BuildContext context)async{
   var data  = await TaskApiClass.deleteTask(taskid) ;
 
   if(data["success"]==true){
@@ -151,6 +174,7 @@ void deleteTask(String taskid)async{
   // });
 
   getListTasks.removeWhere((element) => element.taskId==taskid);
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>TaskList()));
   notifyListeners();
   }
     if(data.data["success"]==false){
