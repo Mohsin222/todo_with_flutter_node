@@ -46,7 +46,7 @@ class _TaskListState extends State<TaskList> {
         backgroundColor: Colors.white.withOpacity(0.3),
         onPressed: (){
         
-        Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeftWithFade, child: AddTask()));
+        Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop,duration: Duration(seconds: 1), child: AddTask()));
       },child: Icon(Icons.add),),
       body: SafeArea(
           child: Container(
@@ -110,7 +110,7 @@ class _TaskListState extends State<TaskList> {
          return      Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                '${value.getListTasks.length} Tasks today',
+                '${value.getListTasks.length} Tasks ',
                 style: Theme.of(context).textTheme.headline6!.copyWith(  color: Colors.white),
               ),
             );

@@ -7,7 +7,7 @@ import 'package:todo_with_node/models/task_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_with_node/models/usermodel.dart';
 class TaskApiClass {
-  static String apiUrl ="https://enchanting-pink-headscarf.cyclic.app";
+  static String apiUrl ="https://adorable-teal-wetsuit.cyclic.app";
   
  static gettasks() async {
   List<TaskModel> task = [];

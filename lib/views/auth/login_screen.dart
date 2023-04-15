@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_node/components/button1.dart';
+import 'package:todo_with_node/views/auth/signup_screen.dart';
 
 import '../../components/text_field.dart';
 import '../../providers/auth_provider.dart';
@@ -28,7 +31,9 @@ TextEditingController passwordController =TextEditingController(text: '123456');
     return  Scaffold(
       body: SafeArea(
         child: Container(
-           decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/background1.jpg'),fit: BoxFit.cover)),
+           decoration: BoxDecoration(
+            color: Colors.black,
+            image: DecorationImage(image: AssetImage('assets/background1.jpg'),fit: BoxFit.cover)),
           child: Consumer<AuthProvider>(
            
             builder: (context, value,child) {
@@ -46,7 +51,10 @@ TextEditingController passwordController =TextEditingController(text: '123456');
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
 
-                        children: [
+                        children: AnimateList(
+                          interval: 40.ms,
+               effects: [FadeEffect(duration: 300.ms)],
+                          children: [
                 
                           Container(
                            height: 50,
@@ -56,7 +64,8 @@ TextEditingController passwordController =TextEditingController(text: '123456');
                           Container(
                       
                             // height: 24,
-                            child: Text('Login to App',style: TextStyle(fontSize: 24,color: Colors.white),),),
+                            child: Text('Login to App',style: TextStyle(fontSize: 24,color: Colors.white),),)
+                            ,
                               SizedBox(height: 4,),
                                 Container(
                             // height: 24,
@@ -111,13 +120,13 @@ TextEditingController passwordController =TextEditingController(text: '123456');
                        
                       ),),
                                        //  password  Section end xxxxxxxxxxxxxxxx
-                      SizedBox(height: 16,),
+                  
                                 
                                 
                                 
                                 
                       
-                       SizedBox(height: 72,),
+                    const   SizedBox(height: 88,),
                                 
                       //  login button
                
@@ -133,15 +142,21 @@ TextEditingController passwordController =TextEditingController(text: '123456');
                       //       }
                        }),
                       //  Spacer(),
-                            SizedBox(height: 34,),
+                 const           SizedBox(height: 34,),
                                      Container(
 
                             child: Text('Dont have account',style: TextStyle(fontSize: 16,color: Colors.white),),),
-                                        Container(
-        
-                            child: Text('Sign Up',style: TextStyle(fontSize: 18,color: Colors.white),),),
-                            SizedBox(height: 34,),
+                                        InkWell(
+                                          onTap: (){
+                                   Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop,duration: Duration(seconds: 1), child: SignUpScreen()));            
+                                          },
+                                          child: Container(
+                                                
+                                                                    child: Text('Sign Up',style: TextStyle(fontSize: 18,color: Colors.white),),),
+                                        ),
+                  const          SizedBox(height: 34,),
                         ],
+                        )
                       ),
                     ),
                   ),

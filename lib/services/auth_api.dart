@@ -11,7 +11,7 @@ import 'package:todo_with_node/models/usermodel.dart';
 
 class AuthApiClass{
 
-static String apiUrl ="https://enchanting-pink-headscarf.cyclic.app";
+static String apiUrl ="https://adorable-teal-wetsuit.cyclic.app";
   static signUp(UserModel userModel)async{
  var url = Uri.parse('$apiUrl/auth/signUp');
 var response = await http.post(url,body: userModel.toMap()

@@ -45,186 +45,201 @@ class _AddTaskState extends State<AddTask> {
       body: SafeArea(
           child: Container(
         decoration: BoxDecoration(
+          color: Colors.black,
             image: DecorationImage(
                 image: AssetImage(ImagesPath.backgroundImage),
                 fit: BoxFit.cover)),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+          child: Consumer<AddTaskProvider>(
+            
+            builder: (context, val,child) {
+              return Form(
+                key: _formKey,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Stack(
                     children: [
-                   IconButton(onPressed: (){
-                    Navigator.pop(context);
-                    }, icon:    Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30,
-                      ))
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                           IconButton(onPressed: (){
+                            Navigator.pop(context);
+                            }, icon:    Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                                size: 30,
+                              ))
+                            ],
+                          ),
+                          Container(
+                            child: Text(
+                              'ADD TASK',
+                              style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          fieldsHeading('Title'),
+                          Container(
+                            // padding: EdgeInsets.all(5),
+                            height: 55,
+          
+                            child: TextFormField(
+                              cursorColor: Colors.white,
+                              style: const TextStyle(color: Colors.white),
+                              controller: titleController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                              decoration: textDecoration(lableText: 'Enter Yout Title'),
+                            ),
+                          ),
+          
+                          SizedBox(
+                            height: 12,
+                          ),
+                          fieldsHeading('Description'),
+          
+                          TextFormField(
+              
+                      
+                            cursorColor: Colors.white,
+                            textAlign: TextAlign.justify,
+                            style: const TextStyle(color: Colors.white),
+                            controller: descriptionController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                            decoration: textDecoration(
+                                lableText: 'Enter Yout Title',
+                                paddingVertical: 100,
+                                paddingHorizontal: 10),
+                          ),
+          
+                 SizedBox(height: 12,),
+                                                Text(completeDate.toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
+                                                SizedBox(height: 12,),
+                          Button1(text: 'Pick DateTime', press: () {
+                                   // time picker
+                                   DatePicker.showTimePicker(context,
+                                        theme: DatePickerTheme(backgroundColor: Colors.white,
+                                            //  itemStyle: TextStyle(color: Colors.black),
+                                            //  doneStyle: TextStyle(color: Colors.white),
+                                            //  headerColor: Colors.white.withOpacity(0.6)
+                                             ),
+                                       showTitleActions: true,
+                                       onChanged: (date) {
+                                         print('change $date in time zone ' +
+                                             date.timeZoneOffset.inHours.toString());
+          
+                                         setState(() {
+                                           completeDate = date;
+                                         });
+                                       },
+                                       onConfirm: (date) {
+                                         print('confirm $date');
+                                         completeDate = date;
+                                       },
+                                       currentTime: DateTime.now(),
+                                       onCancel: () {
+                                         setState(() {
+                                           completeDate = DateTime.now();
+                                         });
+                                       });
+          
+                                   // date picker
+                                   DatePicker.showDatePicker(context,
+                                             theme: DatePickerTheme(backgroundColor: Colors.white,
+                                            //  itemStyle: TextStyle(color: Colors.black),
+                                            //  doneStyle: TextStyle(color: Colors.white),
+                                            //  headerColor: Colors.white.withOpacity(0.6)
+                                             ),
+                                       showTitleActions: true,
+                                       minTime: DateTime.now(),
+                                       maxTime: DateTime(2024, 6, 7),
+                                       onChanged: (date) {
+                                     print('change $date');
+                                     setState(() {
+                                       completeDate = date;
+                                     });
+                                   }, onConfirm: (date) {
+                                     print('confirm $date');
+                                     completeDate = date;
+                                   },
+                                       currentTime: DateTime.now(),
+                                       locale: LocaleType.en);
+                                 },),
+              
+                          SizedBox(
+                            height: 44,
+                          ),
+                          // save button
+                          Button1(text: 'SAVE', press: () async {
+                              if (completeDate!.toUtc().isAfter(curentDate.toUtc())) {
+                                print('its good +++++');
+                                final saveTask = Provider.of<AddTaskProvider>(
+                                    context,
+                                    listen: false);
+                                await saveTask.saveTask(
+                                    context: context,
+                                    title: titleController.text.trim(),
+                                    description: descriptionController.text.trim(),
+                                    completeDate: completeDate.toString());
+                                // TaskModel taskModel = TaskModel(
+                                //   title: 'a',
+                                //   description: 'aa',
+                                //   email: 'avav',
+                                //   taskId: '1',
+                                // );
+                              } else {
+                                print('not good -=--');
+                                dialog2(
+                         
+                                    dialogTtile: 'Date Error',
+                                    dialogContent:
+                                        'Complete date must me greater then current time',
+                                    context: context);
+                              }
+          
+                              //  TaskApiClass.saveTask(taskModel);
+                              //  TaskApiClass.saveTask();
+                              //       if (_formKey.currentState!.validate()) {
+          
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                 SnackBar(content: Text('Processing Data')),
+                              );
+                              //       }
+                            },),
+                        ],
+                      ),
+                               val.loading ?    Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                ):Center()
                     ],
                   ),
-                  Container(
-                    child: Text(
-                      'ADD TASK',
-                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  fieldsHeading('Title'),
-                  Container(
-                    // padding: EdgeInsets.all(5),
-                    height: 55,
-
-                    child: TextFormField(
-                      cursorColor: Colors.white,
-                      style: const TextStyle(color: Colors.white),
-                      controller: titleController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      decoration: textDecoration(lableText: 'Enter Yout Title'),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: 12,
-                  ),
-                  fieldsHeading('Description'),
-
-                  TextFormField(
-          
-              
-                    cursorColor: Colors.white,
-                    textAlign: TextAlign.justify,
-                    style: const TextStyle(color: Colors.white),
-                    controller: descriptionController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                    decoration: textDecoration(
-                        lableText: 'Enter Yout Title',
-                        paddingVertical: 100,
-                        paddingHorizontal: 10),
-                  ),
-
-             SizedBox(height: 12,),
-                                        Text(completeDate.toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
-                                        SizedBox(height: 12,),
-                  Button1(text: 'Pick DateTime', press: () {
-                           // time picker
-                           DatePicker.showTimePicker(context,
-                                theme: DatePickerTheme(backgroundColor: Colors.white,
-                                    //  itemStyle: TextStyle(color: Colors.black),
-                                    //  doneStyle: TextStyle(color: Colors.white),
-                                    //  headerColor: Colors.white.withOpacity(0.6)
-                                     ),
-                               showTitleActions: true,
-                               onChanged: (date) {
-                                 print('change $date in time zone ' +
-                                     date.timeZoneOffset.inHours.toString());
-
-                                 setState(() {
-                                   completeDate = date;
-                                 });
-                               },
-                               onConfirm: (date) {
-                                 print('confirm $date');
-                                 completeDate = date;
-                               },
-                               currentTime: DateTime.now(),
-                               onCancel: () {
-                                 setState(() {
-                                   completeDate = DateTime.now();
-                                 });
-                               });
-
-                           // date picker
-                           DatePicker.showDatePicker(context,
-                                     theme: DatePickerTheme(backgroundColor: Colors.white,
-                                    //  itemStyle: TextStyle(color: Colors.black),
-                                    //  doneStyle: TextStyle(color: Colors.white),
-                                    //  headerColor: Colors.white.withOpacity(0.6)
-                                     ),
-                               showTitleActions: true,
-                               minTime: DateTime.now(),
-                               maxTime: DateTime(2024, 6, 7),
-                               onChanged: (date) {
-                             print('change $date');
-                             setState(() {
-                               completeDate = date;
-                             });
-                           }, onConfirm: (date) {
-                             print('confirm $date');
-                             completeDate = date;
-                           },
-                               currentTime: DateTime.now(),
-                               locale: LocaleType.en);
-                         },),
-    
-                  SizedBox(
-                    height: 44,
-                  ),
-                  // save button
-                  Button1(text: 'SAVE', press: () async {
-                      if (completeDate!.toUtc().isAfter(curentDate.toUtc())) {
-                        print('its good +++++');
-                        final saveTask = Provider.of<AddTaskProvider>(
-                            context,
-                            listen: false);
-                        await saveTask.saveTask(
-                            context: context,
-                            title: titleController.text.trim(),
-                            description: descriptionController.text.trim(),
-                            completeDate: completeDate.toString());
-                        // TaskModel taskModel = TaskModel(
-                        //   title: 'a',
-                        //   description: 'aa',
-                        //   email: 'avav',
-                        //   taskId: '1',
-                        // );
-                      } else {
-                        print('not good -=--');
-                        dialog1(
-                            press: () {},
-                            dialogTtile: 'Date Error',
-                            dialogContent:
-                                'Complete date must me greater then current time',
-                            context: context);
-                      }
-
-                      //  TaskApiClass.saveTask(taskModel);
-                      //  TaskApiClass.saveTask();
-                      //       if (_formKey.currentState!.validate()) {
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                      //       }
-                    },),
-                ],
-              ),
-            ),
+                ),
+              );
+            }
           ),
         ),
       )),

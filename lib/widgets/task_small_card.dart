@@ -28,7 +28,7 @@ class TaskSmallCard extends StatelessWidget {
                   
                   GestureDetector(
                     onTap: (){
-  Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: TaskDetailsScreen(taskModel: taskModel,)));
+  Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft,duration:Duration(seconds: 1), child: TaskDetailsScreen(taskModel: taskModel,)));
 
                     },
                     child: Card(
@@ -40,12 +40,10 @@ class TaskSmallCard extends StatelessWidget {
                       ),
                        borderRadius: BorderRadius.circular(20.0), 
                     ),
-                        // color: taskModel.status ==true?
-                    
-                        //  Color(0xffe91e63):val.taskCompleteColor,
+             
                         color: Colors.white.withOpacity(0.3),
                         child: Container(
-                        // constraints: BoxConstraints(minHeight: 200),
+  
                           padding: EdgeInsets.all(10),
                           height: 200,
                           child: Column(
@@ -112,18 +110,22 @@ class TaskSmallCard extends StatelessWidget {
                                 children: [
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text('Dead line',
+                                    child: Text('Deadline',
                                         style: TextStyle(fontSize: 17,  color: Colors.white)),
                                   ),
                   
                                       Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(taskModel.taskCompleteDate.toString(),
+                                    child: Text(
+                                      // taskModel.taskCompleteDate.toString(),
+                                         DateFormat('yyyy-MM-dd').format(DateTime.parse(taskModel.taskCompleteDate.toString()) as DateTime),
+
+
                                         style: TextStyle(fontSize: 13,  color: Colors.white)),
                                   ),
                                 ],
                               ),
-                              Spacer(),
+                              const Spacer(),
                               //complete status row
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,22 +135,7 @@ class TaskSmallCard extends StatelessWidget {
                                         ? 'Complete'
                                         : 'Incomplete',style: TextStyle(fontSize: 24,color: Colors.white),),
                                   ),
-                  //                 Container(
-                  //                   alignment: Alignment.centerRight,
-                  //                   child: CupertinoSwitch(
-                  //                     // This bool value toggles the switch.
-                  
-                  //                     value: val.switchValue,
-                  
-                  //                     activeColor: Color.fromARGB(255, 104, 0, 35),
-                  
-                  //                     onChanged: (bool? value) {
-                  //                       // This is called when the user toggles the switch.
-                  // val.changeCardStatus(value, taskModel.taskCompleteDate);
-                                  
-                  //                     },
-                  //                   ),
-                  //                 ),
+          
                                 ],
                               ),
                             ],

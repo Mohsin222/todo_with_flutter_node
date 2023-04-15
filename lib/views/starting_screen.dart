@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:todo_with_node/components/dialog1.dart';
 import 'package:todo_with_node/views/auth/login_screen.dart';
@@ -18,7 +19,7 @@ class StartingScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
              color: Color(0xff1c1a28),
-          image: DecorationImage(image: NetworkImage('https://images.unsplash.com/photo-1473081556163-2a17de81fc97?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fGRhcmt8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60'),fit: BoxFit.cover),
+          image: DecorationImage(image:AssetImage('assets/background1.jpg'),fit: BoxFit.cover),
           
           ),
                
@@ -45,25 +46,25 @@ class StartingScreen extends StatelessWidget {
                     child: Text('Welcome to \nTodo App',style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Colors.white,fontWeight: FontWeight.bold),),
                   ),
                     SizedBox(height: 10,),
-                  Container(child: Text('Create Your daily task',style: TextStyle(fontSize: 20,letterSpacing: 2,color: Colors.white.withOpacity(0.6)),),),
+                  Container(child: Text('Create Your Daily Task',style: TextStyle(fontSize: 20,letterSpacing: 2,color: Colors.white.withOpacity(0.8)),),),
               
          space,
                     //login button xxxxxxxxxxxxxxxxxxxxxxxxxx
                      
                                 Button1(text: 'LOGIN', press: (){
-                    Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: LoginScreen()));
+                    Navigator.push(context, PageTransition(type: PageTransitionType.topToBottom,duration: Duration(seconds: 1), child: LoginScreen()));
                                   // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
                                 }),
                     
                     space,
                     // sign up button
-                                 Button1(text: 'Sign Up',press: (){
+                                 Button1(text: 'Sign Up'.toUpperCase(),press: (){
                                   // dialog1(press: (){}, dialogTtile: 'TTULE', dialogContent: "aaaa", context: context);
-      Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: SignUpScreen(), isIos: true));
+      Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop,duration: Duration(seconds: 1), child: SignUpScreen(), isIos: true));
       //  Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen(),));
     },),
-                                 space
-                ],
+                                 space,
+                ] .animate(interval:300.ms).slideX(),
               ),
             ),
           ),

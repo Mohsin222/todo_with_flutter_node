@@ -4,9 +4,11 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_node/components/button1.dart';
 import 'package:todo_with_node/providers/auth_provider.dart';
+import 'package:todo_with_node/views/auth/login_screen.dart';
 
 import '../../components/text_field.dart';
 
@@ -43,7 +45,9 @@ TextEditingController userNameController= TextEditingController();
       body: SafeArea(
       
             child: Container(
-                 decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/background1.jpg'),fit: BoxFit.cover)),
+                 decoration: BoxDecoration(
+                  color: Colors.black,
+                  image: DecorationImage(image: AssetImage('assets/background1.jpg'),fit: BoxFit.cover)),
               child: Consumer<AuthProvider>(
              
                 builder: (context, value,child) {
@@ -73,11 +77,11 @@ TextEditingController userNameController= TextEditingController();
                               Container(
                           
                                 // height: 24,
-                                child: Text('Login to App',style: TextStyle(fontSize: 24,color: Colors.white),),),
+                                child: Text('Sing Up to App',style: TextStyle(fontSize: 24,color: Colors.white),),),
                                   SizedBox(height: 4,),
                                     Container(
                                 // height: 24,
-                                child: Text('We re happy to see you back again',style: TextStyle(fontSize: 16,color: Colors.white),),),
+                                child: Text('We re happy to see you here',style: TextStyle(fontSize: 16,color: Colors.white),),),
                                   
                                   
                                            SizedBox(height: 12,),
@@ -175,10 +179,15 @@ TextEditingController userNameController= TextEditingController();
                                 SizedBox(height: 34,),
                                          Container(
                                 // height: 24,
-                                child: Text('Dont have account',style: TextStyle(fontSize: 16,color: Colors.white),),),
-                                            Container(
-                                // height: 24,
-                                child: Text('Sign Up',style: TextStyle(fontSize: 18,color: Colors.white),),),
+                                child: Text('Already Have an account',style: TextStyle(fontSize: 16,color: Colors.white),),),
+                                            InkWell(
+                                          onTap: (){
+                                   Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop,duration: Duration(seconds: 1), child: LoginScreen()));            
+                                          },
+                                          child: Container(
+                                                
+                                                                    child: Text('Login ',style: TextStyle(fontSize: 18,color: Colors.white),),),
+                                        ),
                                 SizedBox(height: 34,),
                             ],
                           ),
